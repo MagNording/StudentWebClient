@@ -42,7 +42,6 @@ public class InputValidator {
         }
     }
 
-    // Validate Integer input within a specific range (minValue and maxValue inclusive)
     public static int getValidIntegerInput(String prompt, int min, int max) {
         while (true) {
             System.out.print(prompt);
