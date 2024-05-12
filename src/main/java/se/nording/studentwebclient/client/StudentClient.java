@@ -1,5 +1,6 @@
 package se.nording.studentwebclient.client;
 
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -8,10 +9,12 @@ import se.nording.studentwebclient.model.Student;
 import se.nording.studentwebclient.util.WebClientHelper;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class StudentClient {
 
+    private final Logger logger = org.slf4j.LoggerFactory.getLogger(StudentClient.class);
     private final WebClient webClient;
 
     @Autowired
@@ -80,49 +83,34 @@ public class StudentClient {
 
     // Search students by first name
     public List<Student> searchByFirstName(String firstName) {
-        return WebClientHelper.handleRequest(() ->
-            webClient
+        Flux<Student> studentFlux = webClient
                 .get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/search/byFirstName")
-                        .queryParam("firstName", firstName)
-                        .build())
+                .uri("/students/search/byFirstName/{firstName}", firstName)
                 .retrieve()
-                .bodyToFlux(Student.class)
-                .collectList()
-                .block()
-        );
+                .bodyToFlux(Student.class);
+
+        return studentFlux.collectList().block();
     }
 
     // Search students by last name
     public List<Student> searchByLastName(String lastName) {
-        return WebClientHelper.handleRequest(() ->
-            webClient
+        Flux<Student> studentFlux = webClient
                 .get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/search/byLastName")
-                        .queryParam("lastName", lastName)
-                        .build())
+                .uri("/students/search/byLastName/{lastName}", lastName)
                 .retrieve()
-                .bodyToFlux(Student.class)
-                .collectList()
-                .block()
-        );
+                .bodyToFlux(Student.class);
+
+        return studentFlux.collectList().block();
     }
 
     // Search students by email
-    public List<Student> searchByEmail(String email) {
+    public Optional<Student> searchByEmail(String email) {
         return WebClientHelper.handleRequest(() ->
-            webClient
-                .get()
-                .uri(uriBuilder -> uriBuilder
-                        .path("/search/byEmail")
-                        .queryParam("email", email)
-                        .build())
-                .retrieve()
-                .bodyToFlux(Student.class)
-                .collectList()
-                .block()
-        );
+                webClient
+                    .get()
+                    .uri("/students/search/byEmail/{email}", email)
+                    .retrieve()
+                    .bodyToMono(Student.class)
+                    .blockOptional());
     }
 }

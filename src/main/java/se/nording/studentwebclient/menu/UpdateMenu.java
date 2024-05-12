@@ -1,23 +1,23 @@
 package se.nording.studentwebclient.menu;
 
 import org.springframework.stereotype.Component;
-import reactor.core.publisher.Mono;
 import se.nording.studentwebclient.client.StudentClient;
 import se.nording.studentwebclient.model.Student;
-import se.nording.studentwebclient.util.InputValidator;
 
 @Component
 public class UpdateMenu {
 
+    private final se.nording.studentwebclient.util.validator validator;
     private final StudentClient studentClient;
 
 
-    public UpdateMenu(StudentClient studentClient) {
+    public UpdateMenu(se.nording.studentwebclient.util.validator validator, StudentClient studentClient) {
+        this.validator = validator;
         this.studentClient = studentClient;
     }
 
     public void show() {
-        Long id = InputValidator.getValidLong("Enter student ID to update: ");
+        Long id = validator.getValidLong("Enter student ID to update: ");
         try {
             Student student = studentClient.getStudentById(id);
             if (student != null) {
@@ -48,13 +48,15 @@ public class UpdateMenu {
             System.out.println("2. Update Last Name");
             System.out.println("3. Update Email");
             System.out.println("4. Update Phone");
-            int choice = InputValidator.getValidIntegerInput("Enter your choice: ", 0, 4);
+            int choice = validator.getValidIntegerInput("Enter your choice: ", 0, 4);
 
             switch (choice) {
-                case 1 -> student.setFirstName(InputValidator.getValidString("Enter new first name: "));
-                case 2 -> student.setLastName(InputValidator.getValidString("Enter new last name: "));
-                case 3 -> student.setEmail(InputValidator.getValidEmail("Enter new email: "));
-                case 4 -> student.setPhone(InputValidator.getValidPhone("Enter new phone: "));
+                case 1 -> student.setFirstName(validator.readString("Enter new first " +
+                        "name: "));
+                case 2 -> student.setLastName(validator.readString("Enter new last name: "));
+                case 3 -> {System.out.println("Enter new email: ");
+                    student.setEmail(validator.getValidEmail());}
+                case 4 -> student.setPhone(validator.getValidPhone("Enter new phone: "));
                 case 0 -> {
                     updateStudent(id, student);
                     return;

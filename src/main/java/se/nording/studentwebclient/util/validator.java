@@ -1,24 +1,66 @@
 package se.nording.studentwebclient.util;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Scanner;
 
-public class InputValidator {
+@Component
+public class validator implements Validationable {
 
-    private static final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner;
 
-    public static String getValidString(String prompt) {
-        while (true) {
-            System.out.print(prompt);
-            String input = scanner.nextLine().trim();
-            if (!input.isEmpty()) {
-                return input;
-            } else {
-                System.out.println("Input cannot be empty. Please try again.");
-            }
-        }
+    public validator() {
+        this.scanner = new Scanner(System.in);
     }
 
-    public static Long getValidLong(String prompt) {
+    @Override
+    public String getValidString() {
+        String userInput;
+        boolean isUserInputInvalid;
+        do {
+            userInput = scanner.nextLine();
+            if (!userInput.matches("[-a-zA-ZåäöÅÄÖ0-9@._ ]+")) {
+                System.out.println("Incorrect format, you cannot use special characters!");
+                isUserInputInvalid = true;
+            } else if (userInput.isEmpty()) {
+                System.out.println("Entry cannot be blank..");
+                isUserInputInvalid = true;
+            } else {
+                isUserInputInvalid = false;
+            }
+        } while (isUserInputInvalid);
+
+        return userInput;
+    }
+
+    @Override
+    public String readString(String prompt) {
+        System.out.print(prompt);
+        String userInput;
+        boolean isUserInputInvalid;
+        do {
+            userInput = scanner.nextLine();
+            if (!userInput.matches("[-a-zA-ZåäöÅÄÖ0-9@._ ]+")) {
+                System.out.println("Incorrect format, you cannot use special characters!");
+                isUserInputInvalid = true;
+            } else if (userInput.isEmpty()) {
+                System.out.println("Entry cannot be blank.");
+                isUserInputInvalid = true;
+            } else {
+                isUserInputInvalid = false;
+            }
+        } while (isUserInputInvalid);
+
+        return userInput;
+    }
+
+
+    @Override
+    public String getAnyString() {
+        return scanner.nextLine();
+    }
+
+    public Long getValidLong(String prompt) {
         while (true) {
             System.out.print(prompt);
             String input = scanner.nextLine().trim();
@@ -30,7 +72,7 @@ public class InputValidator {
         }
     }
 
-    public static int getValidInt(String prompt) {
+    public int getValidInt(String prompt) {
         while (true) {
             System.out.print(prompt);
             String input = scanner.nextLine().trim();
@@ -43,7 +85,7 @@ public class InputValidator {
     }
 
     // Validate Integer input within a specific range (minValue and maxValue inclusive)
-    public static int getValidIntegerInput(String prompt, int min, int max) {
+    public int getValidIntegerInput(String prompt, int min, int max) {
         while (true) {
             System.out.print(prompt);
             String input = scanner.nextLine();
@@ -61,9 +103,8 @@ public class InputValidator {
         }
     }
 
-    public static String getValidEmail(String prompt) {
+    public String getValidEmail() {
         while (true) {
-            System.out.print(prompt);
             String email = scanner.nextLine().trim();
             if (email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
                 return email;
@@ -73,7 +114,7 @@ public class InputValidator {
         }
     }
 
-    public static String getValidPhone(String prompt) {
+    public String getValidPhone(String prompt) {
         while (true) {
             System.out.print(prompt);
             String phone = scanner.nextLine().trim();

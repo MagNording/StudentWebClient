@@ -4,17 +4,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import se.nording.studentwebclient.client.StudentClient;
 import se.nording.studentwebclient.model.Student;
-import se.nording.studentwebclient.util.InputValidator;
+import se.nording.studentwebclient.util.Validationable;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class SearchMenu {
 
+    private final Validationable validator;
     private final StudentClient studentClient;
 
     @Autowired
-    public SearchMenu(StudentClient studentClient) {
+    public SearchMenu(Validationable validator, StudentClient studentClient) {
+        this.validator = validator;
         this.studentClient = studentClient;
     }
 
@@ -24,7 +27,7 @@ public class SearchMenu {
             System.out.println("1. Search by First Name");
             System.out.println("2. Search by Last Name");
             System.out.println("3. Search by Email");
-            int choice = InputValidator.getValidIntegerInput("Enter your choice: ", 0, 3);
+            int choice = validator.getValidIntegerInput("Enter your choice: ", 0, 3);
 
             switch (choice) {
                 case 0 -> {
@@ -38,40 +41,43 @@ public class SearchMenu {
         }
     }
 
+//    private void searchByFirstName() {
+//        String firstName = validator.getValidString("Enter first name to search: ");
+//        try {
+//            List<Student> students = studentClient.searchByFirstName(firstName);
+//            if (students != null && !students.isEmpty()) {
+//                students.forEach(System.out::println);
+//            } else {
+//                System.out.println("No students found with first name: " + firstName);
+//            }
+//        } catch (Exception e) {
+//            System.err.println("Error searching students by first name: " + e.getMessage());
+//        }
+//    }
+
     private void searchByFirstName() {
-        String firstName = InputValidator.getValidString("Enter first name to search: ");
-        try {
-            List<Student> students = studentClient.searchByFirstName(firstName);
-            if (students != null && !students.isEmpty()) {
-                students.forEach(System.out::println);
-            } else {
-                System.out.println("No students found with first name: " + firstName);
-            }
-        } catch (Exception e) {
-            System.err.println("Error searching students by first name: " + e.getMessage());
-        }
+        System.out.println("Enter first name to search: ");
+        String firstName = validator.getValidString();
+        List<Student> students = studentClient.searchByFirstName(firstName);
+
+        students.forEach(System.out::println);
     }
 
     private void searchByLastName() {
-        String lastName = InputValidator.getValidString("Enter last name to search: ");
-        try {
-            List<Student> students = studentClient.searchByLastName(lastName);
-            if (students != null && !students.isEmpty()) {
-                students.forEach(System.out::println);
-            } else {
-                System.out.println("No students found with last name: " + lastName);
-            }
-        } catch (Exception e) {
-            System.err.println("Error searching students by last name: " + e.getMessage());
-        }
+        System.out.println("Enter last name to search: ");
+        String lastName = validator.getValidString();
+        List<Student> students = studentClient.searchByLastName(lastName);
+
+        students.forEach(System.out::println);
     }
 
     private void searchByEmail() {
-        String email = InputValidator.getValidEmail("Enter email to search: ");
+        System.out.println("Enter email to search: ");
+        String email = validator.getValidEmail();
         try {
-            List<Student> students = studentClient.searchByEmail(email);
-            if (students != null && !students.isEmpty()) {
-                students.forEach(System.out::println);
+            Optional<Student> studentOptional = studentClient.searchByEmail(email);
+            if (studentOptional.isPresent()) {
+                System.out.println(studentOptional.get());
             } else {
                 System.out.println("No students found with email: " + email);
             }
