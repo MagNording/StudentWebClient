@@ -55,8 +55,7 @@ public class UpdateMenu {
                 case 1 -> student.setFirstName(validator.readString("Enter new first " +
                         "name: "));
                 case 2 -> student.setLastName(validator.readString("Enter new last name: "));
-                case 3 -> {System.out.println("Enter new email: ");
-                    student.setEmail(validator.getValidEmail());}
+                case 3 -> student.setEmail(validator.getValidEmail("Enter new email: "));
                 case 4 -> student.setPhone(validator.getValidPhone("Enter new phone: "));
                 case 0 -> {
                     updateStudent(id, student);

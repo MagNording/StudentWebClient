@@ -103,8 +103,9 @@ public class Validator implements Validationable {
         }
     }
 
-    public String getValidEmail() {
+    public String getValidEmail(String prompt) {
         while (true) {
+            System.out.print(prompt);
             String email = scanner.nextLine().trim();
             if (email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$")) {
                 return email;

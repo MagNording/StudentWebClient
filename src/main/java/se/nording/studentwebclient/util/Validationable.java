@@ -14,7 +14,7 @@ public interface Validationable {
 
     int getValidIntegerInput(String prompt, int min, int max);
 
-    String getValidEmail();
+    String getValidEmail(String prompt);
 
     String getValidPhone(String prompt);
 

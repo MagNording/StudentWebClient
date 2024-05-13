@@ -17,7 +17,8 @@ public class ConsoleMenu {
     private final UpdateMenu updateMenu;
 
     @Autowired
-    public ConsoleMenu(Validationable validator, StudentClient studentClient, SearchMenu searchMenu, UpdateMenu updateMenu) {
+    public ConsoleMenu(Validationable validator, StudentClient studentClient, SearchMenu searchMenu,
+                       UpdateMenu updateMenu) {
         this.validator = validator;
         this.studentClient = studentClient;
         this.searchMenu = searchMenu;
@@ -70,7 +71,7 @@ public class ConsoleMenu {
     private void createStudent() {
         String firstName = validator.readString("Enter first name: ");
         String lastName = validator.readString("Enter last name: ");
-        String email = validator.readString("Enter email: ");
+        String email = validator.getValidEmail("Enter email: ");
         String phone = validator.getValidPhone("Enter phone number: ");
         Student student = new Student(null, firstName, lastName, email, phone);
 

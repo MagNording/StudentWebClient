@@ -70,8 +70,7 @@ public class SearchMenu {
     }
 
     private void searchByEmail() {
-        System.out.println("Enter email to search: ");
-        String email = validator.getValidEmail();
+        String email = validator.getValidEmail("Enter email to search: ");
         try {
             Optional<Student> studentOptional = studentClient.searchByEmail(email);
             if (studentOptional.isPresent()) {
