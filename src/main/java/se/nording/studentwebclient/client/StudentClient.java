@@ -1,6 +1,5 @@
 package se.nording.studentwebclient.client;
 
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -14,7 +13,6 @@ import java.util.Optional;
 @Component
 public class StudentClient {
 
-    private final Logger logger = org.slf4j.LoggerFactory.getLogger(StudentClient.class);
     private final WebClient webClient;
 
     @Autowired

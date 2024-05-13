@@ -3,15 +3,16 @@ package se.nording.studentwebclient.menu;
 import org.springframework.stereotype.Component;
 import se.nording.studentwebclient.client.StudentClient;
 import se.nording.studentwebclient.model.Student;
+import se.nording.studentwebclient.util.Validator;
 
 @Component
 public class UpdateMenu {
 
-    private final se.nording.studentwebclient.util.validator validator;
+    private final Validator validator;
     private final StudentClient studentClient;
 
 
-    public UpdateMenu(se.nording.studentwebclient.util.validator validator, StudentClient studentClient) {
+    public UpdateMenu(Validator validator, StudentClient studentClient) {
         this.validator = validator;
         this.studentClient = studentClient;
     }

@@ -41,34 +41,32 @@ public class SearchMenu {
         }
     }
 
-//    private void searchByFirstName() {
-//        String firstName = validator.getValidString("Enter first name to search: ");
-//        try {
-//            List<Student> students = studentClient.searchByFirstName(firstName);
-//            if (students != null && !students.isEmpty()) {
-//                students.forEach(System.out::println);
-//            } else {
-//                System.out.println("No students found with first name: " + firstName);
-//            }
-//        } catch (Exception e) {
-//            System.err.println("Error searching students by first name: " + e.getMessage());
-//        }
-//    }
-
     private void searchByFirstName() {
-        System.out.println("Enter first name to search: ");
-        String firstName = validator.getValidString();
-        List<Student> students = studentClient.searchByFirstName(firstName);
-
-        students.forEach(System.out::println);
+        String firstName = validator.readString("Enter first name to search: ");
+        try {
+            List<Student> students = studentClient.searchByFirstName(firstName);
+            if (students != null && !students.isEmpty()) {
+                students.forEach(System.out::println);
+            } else {
+                System.out.println("No students found with first name: " + firstName);
+            }
+        } catch (Exception e) {
+            System.err.println("Error searching students by first name: " + e.getMessage());
+        }
     }
 
     private void searchByLastName() {
-        System.out.println("Enter last name to search: ");
-        String lastName = validator.getValidString();
-        List<Student> students = studentClient.searchByLastName(lastName);
-
-        students.forEach(System.out::println);
+        String lastName = validator.readString("Enter last name to search: ");
+        try {
+            List<Student> students = studentClient.searchByLastName(lastName);
+            if (students != null && !students.isEmpty()) {
+                students.forEach(System.out::println);
+            } else {
+                System.out.println("No students found with last name: " + lastName);
+            }
+        } catch (Exception e) {
+            System.err.println("Error searching students by last name: " + e.getMessage());
+        }
     }
 
     private void searchByEmail() {

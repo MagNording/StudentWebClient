@@ -5,11 +5,11 @@ import org.springframework.stereotype.Component;
 import java.util.Scanner;
 
 @Component
-public class validator implements Validationable {
+public class Validator implements Validationable {
 
     private final Scanner scanner;
 
-    public validator() {
+    public Validator() {
         this.scanner = new Scanner(System.in);
     }
 
